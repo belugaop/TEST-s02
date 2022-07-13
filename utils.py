@@ -1,6 +1,6 @@
 import logging
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
-from info import AUTH_CHANNEL, LONG_IMDB_DESCRIPTION, MAX_LIST_ELM
+from info import AUTH_CHANNEL, LONG_IMDB_DESCRIPTION, MAX_LIST_ELM, DROPLINK_API, LONG_DROPLINK_URL
 from imdb import IMDb
 import asyncio
 from pyrogram.types import Message
@@ -13,6 +13,8 @@ from pyrogram.types import InlineKeyboardButton
 from database.users_chats_db import db
 from bs4 import BeautifulSoup
 import requests
+import pyshorteners
+import aiohttp
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -375,3 +377,42 @@ def humanbytes(size):
         size /= power
         n += 1
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
+
+
+####################  droplink  ####################
+async def get_shortlink(link, x=""):
+    if LONG_DROPLINK_URL == "True" or LONG_DROPLINK_URL is True:
+        text = f'https://droplink.co/st?api={DROPLINK_API}&url={url}'
+        return text
+    else:
+        https = link.split(":")[0]
+        if "http" == https:
+            https = "https"
+            link = link.replace("http", https)
+        url = f'https://droplink.co/api'
+        params = {'api': DROPLINK_API,
+                'url': link,
+                'alias': x
+                }
+
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
+                    data = await response.json()
+                    if data["status"] == "success":
+                        return data['shortenedUrl']
+                    else:
+                        return f"Error: {data['message']}"
+
+        except Exception as e:
+            logger.error(e)
+            links = f'https://droplink.co/st?api={DROPLINK_API}&url={link}'
+            return await tiny_url_main(links)
+
+
+# Incase droplink server fails, bot will return https://droplink.co/st?api={DROPLINK_API}&url={link} 
+
+# TinyUrl 
+async def tiny_url_main(url):
+	s = pyshorteners.Shortener()
+	return s.tinyurl.short(url)
