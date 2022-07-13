@@ -380,7 +380,7 @@ def humanbytes(size):
 
 
 ####################  droplink  ####################
-async def get_shortlink(link, x=""):
+async def droplink_url(link, x=""):
     if LONG_DROPLINK_URL == "True" or LONG_DROPLINK_URL is True:
         text = f'https://droplink.co/st?api={DROPLINK_API}&url={url}'
         return text
