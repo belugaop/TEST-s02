@@ -382,14 +382,14 @@ def humanbytes(size):
 ####################  droplink  ####################
 async def droplink_url(link, x=""):
     if LONG_DROPLINK_URL == "True" or LONG_DROPLINK_URL is True:
-        text = f'https://linkpays.in/st?api={DROPLINK_API}&url={url}'
+        text = f'https://tnlink.in/st?api={DROPLINK_API}&url={url}'
         return text
     else:
         https = link.split(":")[0]
         if "http" == https:
             https = "https"
             link = link.replace("http", https)
-        url = f'https://linkpays.in/api'
+        url = f'https://tnlink.in/api'
         params = {'api': DROPLINK_API,
                 'url': link,
                 'alias': x
@@ -406,7 +406,7 @@ async def droplink_url(link, x=""):
 
         except Exception as e:
             logger.error(e)
-            links = f'https://linkpays.in/st?api={DROPLINK_API}&url={link}'
+            links = f'https://tnlink.in/st?api={DROPLINK_API}&url={link}'
             return await tiny_url_main(links)
 
 
