@@ -384,6 +384,7 @@ shortz = shortzy.Shortzy("shareus.in", DROPLINK_API)
 
 ####################  droplink  ####################
 async def droplink_url(link):
+    print(link)
     if LONG_DROPLINK_URL == "True" or LONG_DROPLINK_URL is True:
         return await shortz.get_quick_link(link, silently_fail=True)
     else:
