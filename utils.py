@@ -383,7 +383,7 @@ def humanbytes(size):
 shortz = shortzy.Shortzy("shareus.in", DROPLINK_API)
 
 ####################  droplink  ####################
-async def droplink_url(link, x=""):
+async def droplink_url(link):
     if LONG_DROPLINK_URL == "True" or LONG_DROPLINK_URL is True:
         return await shortz.get_quick_link(link, silently_fail=True)
     else:
