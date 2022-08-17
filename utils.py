@@ -387,12 +387,7 @@ async def droplink_url(link):
     if LONG_DROPLINK_URL == "True" or LONG_DROPLINK_URL is True:
         return await shortz.get_quick_link(link, silently_fail=True)
     else:
-        return await shortz.convert(link, silently_fail=True)
+        return await shortz.convert(link)
 
 
-# Incase droplink server fails, bot will return https://droplink.co/st?api={DROPLINK_API}&url={link} 
 
-# TinyUrl 
-async def tiny_url_main(url):
-	s = pyshorteners.Shortener()
-	return s.tinyurl.short(url)
