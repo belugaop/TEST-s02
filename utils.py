@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 import requests
 import pyshorteners
 import aiohttp
+import shortzy
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -379,35 +380,14 @@ def humanbytes(size):
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
 
 
+shortz = shortzy.Shortzy("shareus.in", DROPLINK_API)
+
 ####################  droplink  ####################
 async def droplink_url(link, x=""):
     if LONG_DROPLINK_URL == "True" or LONG_DROPLINK_URL is True:
-        text = f'https://shareus.io/st?api={DROPLINK_API}&url={url}'
-        return text
+        return await shortz.get_quick_link(link, silently_fail=True)
     else:
-        https = link.split(":")[0]
-        if "http" == https:
-            https = "https"
-            link = link.replace("http", https)
-        url = f'https://shareus.io/api'
-        params = {'api': DROPLINK_API,
-                'url': link,
-                'alias': x
-                }
-
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                    data = await response.json()
-                    if data["status"] == "success":
-                        return data['shortenedUrl']
-                    else:
-                        return f"Error: {data['message']}"
-
-        except Exception as e:
-            logger.error(e)
-            links = f'https://shareus.io/st?api={DROPLINK_API}&url={link}'
-            return await tiny_url_main(links)
+        return await shortz.convert(link, silently_fail=True)
 
 
 # Incase droplink server fails, bot will return https://droplink.co/st?api={DROPLINK_API}&url={link} 
