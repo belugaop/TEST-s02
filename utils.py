@@ -380,7 +380,7 @@ def humanbytes(size):
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
 
 
-shortz = shortzy.Shortzy("shareus.in", DROPLINK_API)
+shortz = shortzy.Shortzy(DROPLINK_API, "shareus.in")
 
 ####################  droplink  ####################
 async def droplink_url(link):
