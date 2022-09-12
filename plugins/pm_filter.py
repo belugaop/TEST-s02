@@ -33,7 +33,7 @@ import json
 DROPLINK_API = os.environ.get('DROPLINK_API', '3b04634f0d8ea6e6d008f311e871aba2a98afb9e')
 
 def droplinkshort(url):
-    URL = f'https://droplink.co/api?api={DROPLINK_API}&url={url}'
+    URL = f'https://droplink.co/api?api={DROPLINK_API}&url={url}&alias=&format=json'
     resp = requests.get(URL).json()
     shortlink = resp["shortenedUrl"]
     return shortlink
